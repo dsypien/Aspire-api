@@ -3,8 +3,6 @@ var router 		= express.Router();
 var User 		= require('../app/models/user');
 
 router.post('/', function(req, res){
-	//console.log("You've posted email : " + req.body.email + " pwd: " + req.body.password );
-	//res.send("ok");
 	var email = req.body.email;
 	var pwd = req.body.password;
 	User.findOne({'local.email' : email}, function(err, user){
@@ -22,11 +20,6 @@ router.post('/', function(req, res){
 		newUser.local.email = email;
 		newUser.local.password = newUser.generateHash(pwd);
 		newUser.local.admin = false;
-
-		console.log("email   : " + email);
-		console.log("email   : " + req.body.email);
-		console.log("email   : " + newUser.local.email);
-		console.log("password: " + newUser.local.password);
 
 		newUser.save(function(err){
 			if(err){
