@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var config = require('./config');
 
 var indexRoute = require('./routes/index');
+var authenticateRoute = require('./routes/authenticate');
 var registerRoute = require('./routes/register');
 var loginRoute = require('./routes/login');
 
@@ -21,9 +22,11 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 //routes
+app.use('/login', loginRoute);
+app.use(authenticateRoute);// Authenticate all routes after this
 app.use('/', indexRoute);
 app.use('/register', registerRoute);
-app.use('/login', loginRoute);
+
 
 app.listen(port);
 console.log('Server running on port ' + port);
