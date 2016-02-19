@@ -1,6 +1,7 @@
 var express 	= require('express');
 var router 		= express.Router();
 var User 		= require('../app/models/user');
+var jwt 		= require('jsonwebtoken');
 
 router.post('/', function(req, res){
 	var email = req.body.email;
@@ -18,7 +19,13 @@ router.post('/', function(req, res){
 		}
 
 		if(user.validPassword(pwd)){
-			res.json({success: true});
+			var token = jwt.sign(user, req.app.get('superSecret'), {
+				expiresInMinutes: 1440
+			});
+
+			console.log(req.app.get('superSecret'));
+
+			res.json({success: true, token: token});
 		}
 		else{
 			res.json({success : false, message: "The email and password you entered do not match."});
